@@ -1,13 +1,13 @@
-# Loopwork Homebrew Tap
+# Homebrew Tap
 
 ```console
-brew tap loopwork/tap
+brew tap mattt/tap
 ```
 
 ## Formulas
 
-- **[emcee](https://github.com/loopwork/emcee)** - An MCP generator for OpenAPIs 🫳🎤💥
-- **[olleh](https://github.com/loopwork/olleh)** - An Ollama-compatible CLI for Apple's Foundation Models
+- **[emcee](https://github.com/mattt/emcee)** - MCP generator for OpenAPIs 🫳🎤💥
+- **[olleh](https://github.com/mattt/olleh)** - Ollama-compatible CLI for Apple's Foundation Models
 
 ## Casks
 
