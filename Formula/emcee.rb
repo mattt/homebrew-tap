@@ -5,20 +5,20 @@
 class Emcee < Formula
   desc ""
   homepage ""
-  version "0.5.1"
+  version "0.6.0"
 
   on_macos do
     if Hardware::CPU.intel?
-      url "https://github.com/mattt/emcee/releases/download/v0.5.1/emcee_Darwin_x86_64.tar.gz"
-      sha256 "aadb69c7044c56bde5aad872319c32bebc85b6fb45acf176c497c2294a8f39b1"
+      url "https://github.com/mattt/emcee/releases/download/v0.6.0/emcee_Darwin_x86_64.tar.gz"
+      sha256 "196af14e5a423a2754df1bc93e3a6010df14e13ba610e7e45dff0737afa69ce4"
 
       def install
         bin.install "emcee"
       end
     end
     if Hardware::CPU.arm?
-      url "https://github.com/mattt/emcee/releases/download/v0.5.1/emcee_Darwin_arm64.tar.gz"
-      sha256 "6718fe9cbc7ee9eca79bbd24ac73329f3594722a5a8e32fddb68818f42d5be2e"
+      url "https://github.com/mattt/emcee/releases/download/v0.6.0/emcee_Darwin_arm64.tar.gz"
+      sha256 "aab2ded3891d1e3dfb739f0d8c01eb99da2c9030ad7e67c7e9d50cdfbd0d3860"
 
       def install
         bin.install "emcee"
@@ -28,15 +28,15 @@ class Emcee < Formula
 
   on_linux do
     if Hardware::CPU.intel? and Hardware::CPU.is_64_bit?
-      url "https://github.com/mattt/emcee/releases/download/v0.5.1/emcee_Linux_x86_64.tar.gz"
-      sha256 "637572334a2b7a04a59b77d40f891eb9155c57882a80bd0da10e71b8d3edb1aa"
+      url "https://github.com/mattt/emcee/releases/download/v0.6.0/emcee_Linux_x86_64.tar.gz"
+      sha256 "a0193e8815634d3d5cfa444b851d9bb7e842bc9feb2fdcc5e1c607fd5cc99ad6"
       def install
         bin.install "emcee"
       end
     end
     if Hardware::CPU.arm? and Hardware::CPU.is_64_bit?
-      url "https://github.com/mattt/emcee/releases/download/v0.5.1/emcee_Linux_arm64.tar.gz"
-      sha256 "cf42c014416d1b9c0e8e9080c41712bdc33c10e70b9b963665bad6dc0dd95288"
+      url "https://github.com/mattt/emcee/releases/download/v0.6.0/emcee_Linux_arm64.tar.gz"
+      sha256 "13196802b280930dd28c6033fc099a58ee9e08f30969a1f91444842828f62fa3"
       def install
         bin.install "emcee"
       end
