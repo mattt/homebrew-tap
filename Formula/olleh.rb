@@ -1,8 +1,8 @@
 class Olleh < Formula
     desc "Ollama-compatible CLI for Apple's Foundation Models"
     homepage "https://github.com/mattt/olleh"
-    url "https://github.com/mattt/olleh/archive/refs/tags/1.0.0.tar.gz"
-    sha256 "e7f3c233d94fbccd9ab86eb3e3400933cc9f62512fb7b76e4d7f05a7df7453fe"
+    url "https://github.com/mattt/olleh/archive/refs/tags/1.1.1.tar.gz"
+    sha256 "7429da65aef05f4e66958e1bd72462191adddfe35bed951ff10c01906e9f4341"
     license "MIT"
   
     depends_on xcode: [">= 26.0", :build]
