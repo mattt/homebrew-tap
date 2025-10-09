@@ -5,20 +5,20 @@
 class Emcee < Formula
   desc ""
   homepage ""
-  version "0.6.1"
+  version "0.7.0"
 
   on_macos do
     if Hardware::CPU.intel?
-      url "https://github.com/mattt/emcee/releases/download/v0.6.1/emcee_Darwin_x86_64.tar.gz"
-      sha256 "1fb34a32e090befb0996b23fe80cf9dcb8c8bb1787433b34b95e85789d44fe82"
+      url "https://github.com/mattt/emcee/releases/download/v0.7.0/emcee_Darwin_x86_64.tar.gz"
+      sha256 "d29c9b8134682a425f6b57b0e2f6f2e4bd649f043f41028085b40766bf1759ad"
 
       def install
         bin.install "emcee"
       end
     end
     if Hardware::CPU.arm?
-      url "https://github.com/mattt/emcee/releases/download/v0.6.1/emcee_Darwin_arm64.tar.gz"
-      sha256 "43f426d78068ac54a5aa20db3f9e1bc5d4c4a8c93701876170aeba0cff040761"
+      url "https://github.com/mattt/emcee/releases/download/v0.7.0/emcee_Darwin_arm64.tar.gz"
+      sha256 "f4dea68bfd7f4fe667d12fe750b68bdf4664c7fe0306ad2f868e0430a71cbca5"
 
       def install
         bin.install "emcee"
@@ -27,16 +27,16 @@ class Emcee < Formula
   end
 
   on_linux do
-    if Hardware::CPU.intel? and Hardware::CPU.is_64_bit?
-      url "https://github.com/mattt/emcee/releases/download/v0.6.1/emcee_Linux_x86_64.tar.gz"
-      sha256 "8ca342b57b232e3e5b633037c532f0eaab70313af11bcb34bc2def7df36d3302"
+    if Hardware::CPU.intel? && Hardware::CPU.is_64_bit?
+      url "https://github.com/mattt/emcee/releases/download/v0.7.0/emcee_Linux_x86_64.tar.gz"
+      sha256 "1cf49fa8e1bd5dca9c2664a019e12ded2a9f6253002f785dd4bf2af4aa5c1921"
       def install
         bin.install "emcee"
       end
     end
-    if Hardware::CPU.arm? and Hardware::CPU.is_64_bit?
-      url "https://github.com/mattt/emcee/releases/download/v0.6.1/emcee_Linux_arm64.tar.gz"
-      sha256 "1b838d8c670fbd357d06837046a1c5f77926dd511b9807e512b10cb9065d929c"
+    if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+      url "https://github.com/mattt/emcee/releases/download/v0.7.0/emcee_Linux_arm64.tar.gz"
+      sha256 "ed76e3a0c3124183fc64f43fda6a64aca0543e852b956e6ee8bba9f11e7c046b"
       def install
         bin.install "emcee"
       end
