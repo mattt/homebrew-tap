@@ -1,7 +1,20 @@
 # Homebrew Tap
 
+Install by fully-qualified name to trust only the formula or cask you need
+and avoid Homebrew's untrusted-tap warning:
+
 ```console
-brew tap mattt/tap
+brew install mattt/tap/emcee
+brew install mattt/tap/olleh
+brew install --cask mattt/tap/companion
+brew install --cask mattt/tap/imcp
+```
+
+If you've already tapped and install by short name, trust the formula or cask once:
+
+```console
+brew trust --formula mattt/tap/emcee
+brew trust --cask mattt/tap/companion
 ```
 
 ## Formulas
