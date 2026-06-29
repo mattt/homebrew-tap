@@ -5,22 +5,22 @@
 class Emcee < Formula
   desc ""
   homepage ""
-  version "0.7.0"
+  version "0.8.0"
 
   on_macos do
     if Hardware::CPU.intel?
-      url "https://github.com/mattt/emcee/releases/download/v0.7.0/emcee_Darwin_x86_64.tar.gz"
-      sha256 "d29c9b8134682a425f6b57b0e2f6f2e4bd649f043f41028085b40766bf1759ad"
+      url "https://github.com/mattt/emcee/releases/download/v0.8.0/emcee_Darwin_x86_64.tar.gz"
+      sha256 "fae311d338a2fd21d711be58e91f86878b2fb54b52c19428845c47607002a1e6"
 
-      def install
+      define_method(:install) do
         bin.install "emcee"
       end
     end
     if Hardware::CPU.arm?
-      url "https://github.com/mattt/emcee/releases/download/v0.7.0/emcee_Darwin_arm64.tar.gz"
-      sha256 "f4dea68bfd7f4fe667d12fe750b68bdf4664c7fe0306ad2f868e0430a71cbca5"
+      url "https://github.com/mattt/emcee/releases/download/v0.8.0/emcee_Darwin_arm64.tar.gz"
+      sha256 "db76627c3c110b06ab5718e0621a7a87367d96908d5c217eac03a116881ca059"
 
-      def install
+      define_method(:install) do
         bin.install "emcee"
       end
     end
@@ -28,16 +28,16 @@ class Emcee < Formula
 
   on_linux do
     if Hardware::CPU.intel? && Hardware::CPU.is_64_bit?
-      url "https://github.com/mattt/emcee/releases/download/v0.7.0/emcee_Linux_x86_64.tar.gz"
-      sha256 "1cf49fa8e1bd5dca9c2664a019e12ded2a9f6253002f785dd4bf2af4aa5c1921"
-      def install
+      url "https://github.com/mattt/emcee/releases/download/v0.8.0/emcee_Linux_x86_64.tar.gz"
+      sha256 "d362214e99f76cd98be14efcbe6f8a85848fa41c24cd329cdf98fe21edba2389"
+      define_method(:install) do
         bin.install "emcee"
       end
     end
     if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-      url "https://github.com/mattt/emcee/releases/download/v0.7.0/emcee_Linux_arm64.tar.gz"
-      sha256 "ed76e3a0c3124183fc64f43fda6a64aca0543e852b956e6ee8bba9f11e7c046b"
-      def install
+      url "https://github.com/mattt/emcee/releases/download/v0.8.0/emcee_Linux_arm64.tar.gz"
+      sha256 "589233410105ddc3123cb820442655687576301fbc7855f95fb268abd3ff4a87"
+      define_method(:install) do
         bin.install "emcee"
       end
     end
