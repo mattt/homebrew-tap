@@ -24,5 +24,5 @@ brew trust --cask mattt/tap/companion
 
 ## Casks
 
-- **[companion](https://github.com/loopwork/Companion)** - Your neighborhood friendly MCP utility for macOS, iOS, and visionOS
-- **[imcp](https://github.com/loopwork/iMCP)** - A macOS app that provides an MCP server to your Messages, Contacts, Reminders and more
+- **[companion](https://github.com/mattt/Companion)** - Your neighborhood friendly MCP utility for macOS, iOS, and visionOS
+- **[imcp](https://github.com/mattt/iMCP)** - A macOS app that provides an MCP server to your Messages, Contacts, Reminders and more
