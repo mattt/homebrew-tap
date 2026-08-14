@@ -2,10 +2,10 @@ cask "companion" do
   version :latest
   sha256 :no_check
 
-  url "https://github.com/loopwork/Companion/releases/latest/download/Companion.zip"
+  url "https://github.com/mattt/Companion/releases/latest/download/Companion.zip"
   name "Companion"
   desc "MCP client for testing and debugging MCP servers"
-  homepage "https://github.com/loopwork/Companion"
+  homepage "https://github.com/mattt/Companion"
 
   livecheck do
     url :url
@@ -17,6 +17,6 @@ cask "companion" do
   zap trash: [
     "~/Library/Application Support/Companion",
     "~/Library/Caches/Companion",
-    "~/Library/Preferences/com.loopwork.Companion.plist",
+    "~/Library/Preferences/co.dododo.Companion.plist",
   ]
 end
