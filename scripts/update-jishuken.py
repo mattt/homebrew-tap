@@ -29,7 +29,7 @@ def update():
     version = tag[1:]
     formula_path = Path("Formula/jishuken.rb")
     current = formula_path.read_text()
-    previous = re.search(r'(?:version "|/tags/v)(\d+\.\d+\.\d+)', current)
+    previous = re.search(r'(?:version "|/tags/v|/download/v)(\d+\.\d+\.\d+)', current)
     if previous and tuple(map(int, previous[1].split("."))) > tuple(map(int, version.split("."))):
         raise ValueError("Refusing to downgrade the formula")
     names = {a["name"] for a in release["assets"]}
@@ -76,7 +76,6 @@ def render(version, archives, checksums):
     return (f'''class Jishuken < Formula
   desc "Self-verifying memory for agents"
   homepage "https://github.com/mattt/jishuken"
-  version "{version}"
   license "MIT"
 {revision}
   depends_on arch: [:arm64, :x86_64]
