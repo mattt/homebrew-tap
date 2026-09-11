@@ -1,0 +1,52 @@
+name: Update jishuken
+
+on:
+  schedule:
+    - cron: '23 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-jishuken
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+
+      - name: Update from the latest complete release
+        id: update
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/update-jishuken.py
+
+      - name: Install and test the binary formula
+        if: steps.update.outputs.changed == 'true'
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: '1'
+        run: |
+          brew tap mattt/tap
+          cp Formula/jishuken.rb "$(brew --repository mattt/tap)/Formula/jishuken.rb"
+          brew style mattt/tap/jishuken
+          brew install mattt/tap/jishuken
+          brew test mattt/tap/jishuken
+          brew audit --strict mattt/tap/jishuken
+          if brew deps --include-build mattt/tap/jishuken | grep -qx rust; then
+            echo "The binary formula must not depend on Rust." >&2
+            exit 1
+          fi
+
+      - name: Commit formula update
+        if: steps.update.outputs.changed == 'true'
+        env:
+          VERSION: ${{ steps.update.outputs.version }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add Formula/jishuken.rb
+          git commit -m "Update jishuken to $VERSION"
+          git push

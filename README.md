@@ -28,3 +28,13 @@ brew trust --cask mattt/tap/companion
 
 - **[companion](https://github.com/mattt/Companion)** - Your neighborhood friendly MCP utility for macOS, iOS, and visionOS
 - **[imcp](https://github.com/mattt/iMCP)** - A macOS app that provides an MCP server to your Messages, Contacts, Reminders and more
+
+## Jishuken releases
+
+Jishuken installs precompiled `ken` binaries for macOS 11 or later (Apple
+Silicon and Intel) and Linux (ARM64 and x86-64). Rust is not required.
+
+The **Update jishuken** workflow checks hourly for the latest stable release.
+It waits for all four archives and `SHA256SUMS`, verifies each download, then
+installs and tests the formula before committing the update. Run the workflow
+manually to update immediately. No cross-repository token is needed.
