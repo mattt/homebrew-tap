@@ -1,6 +1,6 @@
 cask "imcp" do
-  version "1.6.1"
-  sha256 "9d2c55916e883dce228cb44b57016465f246dece116bda7e8c1d09500892cc1a"
+  version "1.6.2"
+  sha256 "c99f2aaf79d35cef28a5c7433d1f52abca147dabf64862d72006ee5bed24a62e"
 
   url "https://github.com/mattt/iMCP/releases/download/#{version}/iMCP.zip"
   name "iMCP"
