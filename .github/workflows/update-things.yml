@@ -1,0 +1,48 @@
+name: Update things
+
+on:
+  schedule:
+    - cron: '37 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-things
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+
+      - name: Update from the latest complete release
+        id: update
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/update-things.py
+
+      - name: Install and test the binary formula
+        if: steps.update.outputs.changed == 'true'
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: '1'
+        run: |
+          brew tap mattt/tap
+          cp Formula/things.rb "$(brew --repository mattt/tap)/Formula/things.rb"
+          brew style mattt/tap/things
+          brew install mattt/tap/things
+          brew test mattt/tap/things
+          brew audit --strict mattt/tap/things
+
+      - name: Commit formula update
+        if: steps.update.outputs.changed == 'true'
+        env:
+          VERSION: ${{ steps.update.outputs.version }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add Formula/things.rb
+          git commit -m "Update things to $VERSION"
+          git push

@@ -7,6 +7,7 @@ and avoid Homebrew's untrusted-tap warning:
 brew install mattt/tap/emcee
 brew install mattt/tap/jishuken
 brew install mattt/tap/olleh
+brew install mattt/tap/things
 brew install --cask mattt/tap/companion
 brew install --cask mattt/tap/imcp
 ```
@@ -23,6 +24,7 @@ brew trust --cask mattt/tap/companion
 - **[emcee](https://github.com/mattt/emcee)** - MCP generator for OpenAPIs 🫳🎤💥
 - **[jishuken](https://github.com/mattt/jishuken)** - Self-verifying memory for agents; installs the `ken` command
 - **[olleh](https://github.com/mattt/olleh)** - Ollama-compatible CLI for Apple's Foundation Models
+- **[things](https://github.com/mattt/things-cli)** - CLI and MCP server for Things 3
 
 ## Casks
 
@@ -36,5 +38,15 @@ Silicon and Intel) and Linux (ARM64 and x86-64). Rust is not required.
 
 The **Update jishuken** workflow checks hourly for the latest stable release.
 It waits for all four archives and `SHA256SUMS`, verifies each download, then
+installs and tests the formula before committing the update. Run the workflow
+manually to update immediately. No cross-repository token is needed.
+
+## Things releases
+
+The things formula installs precompiled `things` binaries for macOS 12 or later
+(Apple Silicon and Intel).
+
+The **Update things** workflow checks hourly for the latest stable release.
+It waits for both archives and the checksum file, verifies each download, then
 installs and tests the formula before committing the update. Run the workflow
 manually to update immediately. No cross-repository token is needed.
