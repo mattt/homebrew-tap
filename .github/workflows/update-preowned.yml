@@ -1,0 +1,48 @@
+name: Update preowned
+
+on:
+  schedule:
+    - cron: '51 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-preowned
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+
+      - name: Update from the latest complete release
+        id: update
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/update-preowned.py
+
+      - name: Install and test the binary formula
+        if: steps.update.outputs.changed == 'true'
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: '1'
+        run: |
+          brew tap mattt/tap
+          cp Formula/preowned.rb "$(brew --repository mattt/tap)/Formula/preowned.rb"
+          brew style mattt/tap/preowned
+          brew install mattt/tap/preowned
+          brew test mattt/tap/preowned
+          brew audit --strict mattt/tap/preowned
+
+      - name: Commit formula update
+        if: steps.update.outputs.changed == 'true'
+        env:
+          VERSION: ${{ steps.update.outputs.version }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add Formula/preowned.rb
+          git commit -m "Update preowned to $VERSION"
+          git push

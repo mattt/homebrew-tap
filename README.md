@@ -52,3 +52,13 @@ The **Update things** workflow checks hourly for the latest stable release.
 It waits for both archives and the checksum file, verifies each download, then
 installs and tests the formula before committing the update. Run the workflow
 manually to update immediately. No cross-repository token is needed.
+
+## Preowned releases
+
+The preowned formula installs a precompiled `preowned` binary for macOS 26 or
+later on Apple Silicon. Xcode is not required.
+
+The **Update preowned** workflow checks hourly for the latest stable release.
+It waits for the archive and the checksum file, verifies the download, then
+installs and tests the formula before committing the update. Run the workflow
+manually to update immediately. No cross-repository token is needed.
