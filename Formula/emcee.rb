@@ -5,20 +5,20 @@
 class Emcee < Formula
   desc ""
   homepage ""
-  version "0.8.0"
+  version "0.9.0"
 
   on_macos do
     if Hardware::CPU.intel?
-      url "https://github.com/mattt/emcee/releases/download/v0.8.0/emcee_Darwin_x86_64.tar.gz"
-      sha256 "fae311d338a2fd21d711be58e91f86878b2fb54b52c19428845c47607002a1e6"
+      url "https://github.com/mattt/emcee/releases/download/v0.9.0/emcee_Darwin_x86_64.tar.gz"
+      sha256 "ad3b2dbf7ad63a1d8f17eaae69b7c08a5f3f172c3016d83fbe3ed7fa42556aca"
 
       define_method(:install) do
         bin.install "emcee"
       end
     end
     if Hardware::CPU.arm?
-      url "https://github.com/mattt/emcee/releases/download/v0.8.0/emcee_Darwin_arm64.tar.gz"
-      sha256 "db76627c3c110b06ab5718e0621a7a87367d96908d5c217eac03a116881ca059"
+      url "https://github.com/mattt/emcee/releases/download/v0.9.0/emcee_Darwin_arm64.tar.gz"
+      sha256 "b68b35f0c6b02bf4d0fe739e0144ecf14e7e6f4d7e3456cad9bf0c0073ebd5c5"
 
       define_method(:install) do
         bin.install "emcee"
@@ -28,15 +28,15 @@ class Emcee < Formula
 
   on_linux do
     if Hardware::CPU.intel? && Hardware::CPU.is_64_bit?
-      url "https://github.com/mattt/emcee/releases/download/v0.8.0/emcee_Linux_x86_64.tar.gz"
-      sha256 "d362214e99f76cd98be14efcbe6f8a85848fa41c24cd329cdf98fe21edba2389"
+      url "https://github.com/mattt/emcee/releases/download/v0.9.0/emcee_Linux_x86_64.tar.gz"
+      sha256 "f41a57fdf1b7637a6242b95cdb804b0eb9d0548eb515db25e44a375eb6c1488f"
       define_method(:install) do
         bin.install "emcee"
       end
     end
     if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-      url "https://github.com/mattt/emcee/releases/download/v0.8.0/emcee_Linux_arm64.tar.gz"
-      sha256 "589233410105ddc3123cb820442655687576301fbc7855f95fb268abd3ff4a87"
+      url "https://github.com/mattt/emcee/releases/download/v0.9.0/emcee_Linux_arm64.tar.gz"
+      sha256 "94f9a8ff810600f6f3dd9c626a438ab9a2e975b6a36987feda73d1bb1d22a98b"
       define_method(:install) do
         bin.install "emcee"
       end
