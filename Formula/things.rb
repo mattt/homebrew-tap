@@ -9,12 +9,12 @@ class Things < Formula
     depends_on macos: :monterey
 
     on_arm do
-      url "https://github.com/mattt/things-cli/releases/download/v0.2.1/things_0.2.1_darwin_arm64.tar.gz"
-      sha256 "139dc63aabc05d9c3b97b96feac7aaec30e3b7809f54375ba971ec352adfc284"
+      url "https://github.com/mattt/things-cli/releases/download/v0.2.2/things_0.2.2_darwin_arm64.tar.gz"
+      sha256 "11d9c37f0e104a9a3100eeaf20b36d5e1fd8106be1e5ffd97cbefc431d8063e2"
     end
     on_intel do
-      url "https://github.com/mattt/things-cli/releases/download/v0.2.1/things_0.2.1_darwin_amd64.tar.gz"
-      sha256 "8ed4c7ef0597c146307588f1ab97e6cc18ddbd1d500180c47b3f16112cc38fe8"
+      url "https://github.com/mattt/things-cli/releases/download/v0.2.2/things_0.2.2_darwin_amd64.tar.gz"
+      sha256 "f50f03346407c3e5ee52d8cc569901f271997aee3bbd56e199ec10c7d0c431ef"
     end
   end
 
