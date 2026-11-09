@@ -11,6 +11,7 @@ brew install mattt/tap/preowned
 brew install mattt/tap/things
 brew install --cask mattt/tap/companion
 brew install --cask mattt/tap/imcp
+brew install --cask mattt/tap/repossess
 ```
 
 If you've already tapped and install by short name, trust the formula or cask once:
@@ -32,6 +33,14 @@ brew trust --cask mattt/tap/companion
 
 - **[companion](https://github.com/mattt/Companion)** - Your neighborhood friendly MCP utility for macOS, iOS, and visionOS
 - **[imcp](https://github.com/mattt/iMCP)** - A macOS app that provides an MCP server to your Messages, Contacts, Reminders and more
+- **[repossess](https://github.com/mattt/rePossess)** - Menu bar app that connects a reMarkable tablet to MCP clients; installs the `repossess` command
+
+## rePossess releases
+
+rePossess needs an Apple silicon Mac with macOS 27 or later.
+The **Update repossess** workflow checks hourly for the latest stable release.
+It waits for `rePossess-VERSION.zip` and its `.sha256` file, verifies the download,
+then updates the cask's version and checksum.
 
 ## Jishuken releases
 

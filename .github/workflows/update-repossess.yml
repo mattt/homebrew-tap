@@ -1,0 +1,47 @@
+name: Update repossess
+
+on:
+  schedule:
+    - cron: '23 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-repossess
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+
+      - name: Update from the latest complete release
+        id: update
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/update-repossess.py
+
+      # The cask needs macOS 27, so this runner can check it but not install it.
+      - name: Check the cask
+        if: steps.update.outputs.changed == 'true'
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: '1'
+        run: |
+          brew tap mattt/tap
+          cp Casks/repossess.rb "$(brew --repository mattt/tap)/Casks/repossess.rb"
+          brew style --cask mattt/tap/repossess
+          brew audit --cask --strict mattt/tap/repossess
+
+      - name: Commit cask update
+        if: steps.update.outputs.changed == 'true'
+        env:
+          VERSION: ${{ steps.update.outputs.version }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add Casks/repossess.rb
+          git commit -m "Update rePossess cask to $VERSION"
+          git push
