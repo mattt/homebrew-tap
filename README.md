@@ -7,6 +7,7 @@ and avoid Homebrew's untrusted-tap warning:
 brew install mattt/tap/emcee
 brew install mattt/tap/jishuken
 brew install mattt/tap/olleh
+brew install mattt/tap/plonge
 brew install mattt/tap/preowned
 brew install mattt/tap/things
 brew install --cask mattt/tap/companion
@@ -26,6 +27,7 @@ brew trust --cask mattt/tap/companion
 - **[emcee](https://github.com/mattt/emcee)** - MCP generator for OpenAPIs 🫳🎤💥
 - **[jishuken](https://github.com/mattt/jishuken)** - Self-verifying memory for agents; installs the `ken` command
 - **[olleh](https://github.com/mattt/olleh)** - Ollama-compatible CLI for Apple's Foundation Models
+- **[plonge](https://github.com/mattt/plonge)** - Find and delete the caches that developer tools leave on disk
 - **[preowned](https://github.com/mattt/preowned)** - OpenAI-compatible API for the models built into macOS
 - **[things](https://github.com/mattt/things-cli)** - CLI and MCP server for Things 3
 
