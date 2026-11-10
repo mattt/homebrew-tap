@@ -47,8 +47,6 @@ module Release
     nil
   end
 
-  NUMBERS = %w[zero one two three four five six seven eight nine].freeze
-
   # Updates a formula or cask after a complete, verified stable release.
   #
   # path:             "Formula/name.rb" or "Casks/name.rb"
@@ -64,7 +62,7 @@ module Release
     return unless release
 
     tag = release["tagName"]
-    unless !release["isDraft"] && !release["isPrerelease"] && /\A#{prefix}\d+\.\d+\.\d+\z/.match?(tag)
+    if release["isDraft"] || release["isPrerelease"] || !/\A#{Regexp.escape(prefix)}\d+\.\d+\.\d+\z/.match?(tag)
       raise "Expected a stable #{prefix}MAJOR.MINOR.PATCH release"
     end
 
@@ -78,10 +76,9 @@ module Release
     names = release["assets"].map { |asset| asset["name"] }
     manifest_name = manifest.call(version)
     archive_names = archives.call(version)
-    count = archive_names.size
-    unless (([manifest_name] + archive_names.values) - names).empty?
-      all = count == 1 ? "the archive" : count == 2 ? "both archives" : "all #{NUMBERS[count]} archives"
-      puts "#{tag}: waiting for #{all} and #{manifest_name}"
+    missing = archive_names.values + [manifest_name] - names
+    unless missing.empty?
+      puts "#{tag}: waiting for #{missing.join(", ")}"
       return
     end
 
@@ -89,8 +86,7 @@ module Release
       download(repo, tag, manifest_name, tmp)
       checksums = parse_checksums(File.read(File.join(tmp, manifest_name)))
       if checksums.keys.sort != archive_names.values.sort
-        exactly = count == 1 ? "the archive" : "the #{NUMBERS[count]} archives"
-        raise "Checksum manifest must describe exactly #{exactly}"
+        raise "#{manifest_name} must list exactly #{archive_names.values.join(", ")}"
       end
 
       text = render.call(version, archive_names, checksums)
