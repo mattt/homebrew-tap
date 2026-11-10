@@ -22,7 +22,7 @@ jobs:
         id: update
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/update-preowned.py
+        run: ruby Scripts/update-preowned.rb
 
       - name: Install and test the binary formula
         if: steps.update.outputs.changed == 'true'

@@ -22,7 +22,7 @@ jobs:
         id: update
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/update-repossess.py
+        run: ruby Scripts/update-repossess.rb
 
       # The cask needs macOS 27, so this runner can check it but not install it.
       - name: Check the cask
