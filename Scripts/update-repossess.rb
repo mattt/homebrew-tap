@@ -2,50 +2,47 @@
 # frozen_string_literal: true
 
 # Update the rePossess cask only after a complete, verified stable release.
-require_relative "binary_formula"
+require_relative "release"
 
-REPO = "mattt/rePossess"
-CASK = "Casks/repossess.rb"
+TEMPLATE = <<'EOS'
+cask "repossess" do
+  version "%<version>s"
+  sha256 "%<sha256>s"
 
-release = JSON.parse(BinaryFormula.gh(REPO, "release", "view", "--json", "tagName,isDraft,isPrerelease,assets"))
-tag = release["tagName"]
-if release["isDraft"] || release["isPrerelease"] || !/\A\d+\.\d+\.\d+\z/.match?(tag)
-  raise "Expected a stable MAJOR.MINOR.PATCH release"
+  url "https://github.com/mattt/rePossess/releases/download/#{version}/rePossess-#{version}.zip"
+  name "rePossess"
+  desc "Menu bar app that connects a reMarkable tablet to MCP clients"
+  homepage "https://github.com/mattt/rePossess"
+
+  livecheck do
+    url :url
+    strategy :github_latest
+  end
+
+  depends_on arch: :arm64
+  depends_on macos: :golden_gate
+
+  app "rePossess.app"
+  binary "#{appdir}/rePossess.app/Contents/MacOS/repossess"
+
+  zap trash: [
+    "~/Library/Application Support/rePossess",
+    "~/Library/Preferences/co.dododo.repossess.plist",
+  ]
+end
+EOS
+
+render = lambda do |version, archives, checksums|
+  format(TEMPLATE, version: version, sha256: checksums.fetch(archives.fetch("zip")))
 end
 
-current = File.read(CASK)
-previous = /^  version "(\d+\.\d+\.\d+)"$/.match(current)
-raise "The cask has no version line" unless previous
-if (BinaryFormula.version_parts(previous[1]) <=> BinaryFormula.version_parts(tag)) == 1
-  raise "Refusing to downgrade the cask"
-end
-if previous[1] == tag
-  puts "#{tag}: cask already current"
-  exit
-end
-
-archive = "rePossess-#{tag}.zip"
-checksum = "#{archive}.sha256"
-names = release["assets"].map { |asset| asset["name"] }
-unless ([archive, checksum] - names).empty?
-  puts "#{tag}: waiting for #{archive} and #{checksum}"
-  exit
-end
-
-actual = Dir.mktmpdir do |tmp|
-  BinaryFormula.download(REPO, tag, checksum, tmp)
-  match = /\A([0-9a-f]{64})  #{Regexp.escape(archive)}\n?\z/.match(File.read(File.join(tmp, checksum)))
-  raise "Malformed #{checksum}" unless match
-
-  BinaryFormula.download(REPO, tag, archive, tmp)
-  digest = Digest::SHA256.file(File.join(tmp, archive)).hexdigest
-  raise "Checksum mismatch for #{archive}" if digest != match[1]
-
-  digest
-end
-
-updated = current.sub(/^  version ".*"$/) { %(  version "#{tag}") }
-updated = updated.sub(/^  sha256 ".*"$/) { %(  sha256 "#{actual}") }
-File.write(CASK, updated)
-puts "Updated repossess to #{tag}"
-BinaryFormula.write_output(tag)
+Release.update(
+  repo: "mattt/rePossess",
+  path: "Casks/repossess.rb",
+  prefix: "",
+  previous: /^  version "(\d+\.\d+\.\d+)"$/,
+  archives: ->(version) { { "zip" => "rePossess-#{version}.zip" } },
+  manifest: ->(version) { "rePossess-#{version}.zip.sha256" },
+  render: render,
+  first_release_ok: false
+)

@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
-# Shared release check and verification for the update scripts.
+# Shared release check and verification for the formula and cask update scripts.
 require "digest"
 require "json"
 require "open3"
 require "tmpdir"
 
-module BinaryFormula
+module Release
   CHECKSUM_LINE = /\A([0-9a-f]{64})  ([A-Za-z0-9._-]+)\z/
-  STABLE_TAG = /\Av\d+\.\d+\.\d+\z/
 
   module_function
 
@@ -48,46 +47,55 @@ module BinaryFormula
     nil
   end
 
-  # Updates Formula/<name>.rb after a complete, verified stable release.
+  NUMBERS = %w[zero one two three four five six seven eight nine].freeze
+
+  # Updates a formula or cask after a complete, verified stable release.
   #
-  # previous:         regexp whose first group is the version in the formula
+  # path:             "Formula/name.rb" or "Casks/name.rb"
+  # previous:         regexp whose first group is the version in that file
+  # archives:         ->(version) { {target => archive name} }
+  # manifest:         ->(version) { name of the file listing "HASH  NAME" lines }
+  # render:           ->(version, archives, checksums) { file text }
+  # prefix:           what comes before the version in the release tag
   # first_release_ok: wait quietly when the repository has no release,
-  #                   and treat a missing formula as empty
-  # archives:         ->(tag, version) { {target => archive name} }
-  # manifest:         ->(tag, version) { checksum manifest name }
-  # waiting, exactly: phrases for the "waiting" and manifest error messages
-  # render:           ->(version, archives, checksums) { formula text }
-  def update(repo:, name:, previous:, first_release_ok:, archives:, manifest:, waiting:, exactly:, render:)
+  #                   and treat a missing file as empty
+  def update(repo:, path:, previous:, archives:, manifest:, render:, prefix: "v", first_release_ok: true)
     release = release_info(repo, first_release_ok)
     return unless release
 
     tag = release["tagName"]
-    if release["isDraft"] || release["isPrerelease"] || !STABLE_TAG.match?(tag)
-      raise "Expected a stable vMAJOR.MINOR.PATCH release"
+    unless !release["isDraft"] && !release["isPrerelease"] && /\A#{prefix}\d+\.\d+\.\d+\z/.match?(tag)
+      raise "Expected a stable #{prefix}MAJOR.MINOR.PATCH release"
     end
 
-    version = tag[1..]
-    formula_path = "Formula/#{name}.rb"
-    current = first_release_ok && !File.exist?(formula_path) ? "" : File.read(formula_path)
+    version = tag.delete_prefix(prefix)
+    name = File.basename(path, ".rb")
+    kind = path.start_with?("Casks/") ? "cask" : "formula"
+    current = first_release_ok && !File.exist?(path) ? "" : File.read(path)
     old = previous.match(current)
-    raise "Refusing to downgrade the formula" if old && (version_parts(old[1]) <=> version_parts(version)) == 1
+    raise "Refusing to downgrade the #{kind}" if old && (version_parts(old[1]) <=> version_parts(version)) == 1
 
     names = release["assets"].map { |asset| asset["name"] }
-    manifest_name = manifest.call(tag, version)
-    archive_names = archives.call(tag, version)
+    manifest_name = manifest.call(version)
+    archive_names = archives.call(version)
+    count = archive_names.size
     unless (([manifest_name] + archive_names.values) - names).empty?
-      puts "#{tag}: waiting for #{waiting} and #{manifest_name}"
+      all = count == 1 ? "the archive" : count == 2 ? "both archives" : "all #{NUMBERS[count]} archives"
+      puts "#{tag}: waiting for #{all} and #{manifest_name}"
       return
     end
 
     Dir.mktmpdir do |tmp|
       download(repo, tag, manifest_name, tmp)
       checksums = parse_checksums(File.read(File.join(tmp, manifest_name)))
-      raise "Checksum manifest must describe exactly #{exactly}" if checksums.keys.sort != archive_names.values.sort
+      if checksums.keys.sort != archive_names.values.sort
+        exactly = count == 1 ? "the archive" : "the #{NUMBERS[count]} archives"
+        raise "Checksum manifest must describe exactly #{exactly}"
+      end
 
-      formula = render.call(version, archive_names, checksums)
-      if formula == current
-        puts "#{tag}: formula already current"
+      text = render.call(version, archive_names, checksums)
+      if text == current
+        puts "#{tag}: #{kind} already current"
         return
       end
       archive_names.each_value do |archive|
@@ -95,7 +103,7 @@ module BinaryFormula
         actual = Digest::SHA256.file(File.join(tmp, archive)).hexdigest
         raise "Checksum mismatch for #{archive}" if actual != checksums[archive]
       end
-      File.write(formula_path, formula)
+      File.write(path, text)
     end
     puts "Updated #{name} to #{tag}"
     write_output(version)

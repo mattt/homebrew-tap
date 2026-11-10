@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 # Update the binary formula only after a complete, verified stable release.
-require_relative "binary_formula"
+require_relative "release"
 
 REPO = "mattt/things-cli"
 
@@ -37,19 +37,16 @@ EOS
 
 render = lambda do |version, archives, checksums|
   stanzas = archives.to_h do |target, name|
-    [target.to_sym, BinaryFormula.asset_stanza(REPO, version, name, checksums[name], "      ")]
+    [target.to_sym, Release.asset_stanza(REPO, version, name, checksums[name], "      ")]
   end
   format(TEMPLATE, **stanzas)
 end
 
-BinaryFormula.update(
+Release.update(
   repo: REPO,
-  name: "things",
+  path: "Formula/things.rb",
   previous: %r{/download/v(\d+\.\d+\.\d+)/},
-  first_release_ok: true,
-  archives: ->(_tag, version) { %w[darwin_arm64 darwin_amd64].to_h { |t| [t, "things_#{version}_#{t}.tar.gz"] } },
-  manifest: ->(_tag, version) { "things_#{version}_checksums.txt" },
-  waiting: "both archives",
-  exactly: "the two archives",
+  archives: ->(version) { %w[darwin_arm64 darwin_amd64].to_h { |t| [t, "things_#{version}_#{t}.tar.gz"] } },
+  manifest: ->(version) { "things_#{version}_checksums.txt" },
   render: render
 )

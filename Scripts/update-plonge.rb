@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 # Update the binary formula only after a complete, verified stable release.
-require_relative "binary_formula"
+require_relative "release"
 
 REPO = "mattt/plonge"
 TARGETS = %w[darwin_arm64 darwin_amd64 linux_arm64 linux_amd64].freeze
@@ -43,19 +43,16 @@ EOS
 
 render = lambda do |version, archives, checksums|
   stanzas = archives.to_h do |target, name|
-    [target.to_sym, BinaryFormula.asset_stanza(REPO, version, name, checksums[name], "      ")]
+    [target.to_sym, Release.asset_stanza(REPO, version, name, checksums[name], "      ")]
   end
   format(TEMPLATE, **stanzas)
 end
 
-BinaryFormula.update(
+Release.update(
   repo: REPO,
-  name: "plonge",
+  path: "Formula/plonge.rb",
   previous: %r{/download/v(\d+\.\d+\.\d+)/},
-  first_release_ok: true,
-  archives: ->(_tag, version) { TARGETS.to_h { |t| [t, "plonge_#{version}_#{t}.tar.gz"] } },
-  manifest: ->(_tag, version) { "plonge_#{version}_checksums.txt" },
-  waiting: "all four archives",
-  exactly: "the four archives",
+  archives: ->(version) { TARGETS.to_h { |t| [t, "plonge_#{version}_#{t}.tar.gz"] } },
+  manifest: ->(version) { "plonge_#{version}_checksums.txt" },
   render: render
 )

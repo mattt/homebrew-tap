@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 # Update the binary formula only after a complete, verified stable release.
-require_relative "binary_formula"
+require_relative "release"
 
 REPO = "mattt/preowned"
 
@@ -36,17 +36,14 @@ EOS
 
 render = lambda do |version, archives, checksums|
   name = archives.fetch("darwin_arm64")
-  format(TEMPLATE, darwin_arm64: BinaryFormula.asset_stanza(REPO, version, name, checksums[name], "  "))
+  format(TEMPLATE, darwin_arm64: Release.asset_stanza(REPO, version, name, checksums[name], "  "))
 end
 
-BinaryFormula.update(
+Release.update(
   repo: REPO,
-  name: "preowned",
+  path: "Formula/preowned.rb",
   previous: %r{/download/v(\d+\.\d+\.\d+)/},
-  first_release_ok: true,
-  archives: ->(_tag, version) { { "darwin_arm64" => "preowned_#{version}_darwin_arm64.tar.gz" } },
-  manifest: ->(_tag, version) { "preowned_#{version}_checksums.txt" },
-  waiting: "the archive",
-  exactly: "the archive",
+  archives: ->(version) { { "darwin_arm64" => "preowned_#{version}_darwin_arm64.tar.gz" } },
+  manifest: ->(version) { "preowned_#{version}_checksums.txt" },
   render: render
 )

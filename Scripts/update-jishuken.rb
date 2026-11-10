@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 # Update the binary formula only after a complete, verified stable release.
-require_relative "binary_formula"
+require_relative "release"
 
 REPO = "mattt/jishuken"
 TARGETS = %w[
@@ -63,21 +63,19 @@ EOS
 
 render = lambda do |version, archives, checksums|
   stanzas = archives.to_h do |target, name|
-    [target.tr("-", "_").to_sym, BinaryFormula.asset_stanza(REPO, version, name, checksums[name], "      ")]
+    [target.tr("-", "_").to_sym, Release.asset_stanza(REPO, version, name, checksums[name], "      ")]
   end
   # Upgrade users of the original 0.1.0 source formula to the binary package.
   revision = version == "0.1.0" ? "  revision 1\n" : ""
   format(TEMPLATE, revision: revision, **stanzas)
 end
 
-BinaryFormula.update(
+Release.update(
   repo: REPO,
-  name: "jishuken",
+  path: "Formula/jishuken.rb",
   previous: %r{(?:version "|/tags/v|/download/v)(\d+\.\d+\.\d+)},
-  first_release_ok: false,
-  archives: ->(tag, _version) { TARGETS.to_h { |t| [t, "jishuken-#{tag}-#{t}.tar.gz"] } },
-  manifest: ->(_tag, _version) { "SHA256SUMS" },
-  waiting: "all four archives",
-  exactly: "the four archives",
-  render: render
+  archives: ->(version) { TARGETS.to_h { |t| [t, "jishuken-v#{version}-#{t}.tar.gz"] } },
+  manifest: ->(_version) { "SHA256SUMS" },
+  render: render,
+  first_release_ok: false
 )
