@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Shared release check and verification for the formula and cask update scripts.
 require "digest"
 require "json"
 require "open3"
