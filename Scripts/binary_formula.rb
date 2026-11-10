@@ -23,16 +23,9 @@ module BinaryFormula
     version.split(".").map(&:to_i)
   end
 
-  # Matches Python's str.splitlines: more separators than "\n", one empty tail dropped.
-  def split_lines(text)
-    lines = text.split(/\r\n|[\n\r\v\f\x1c-\x1e\u0085  ]/, -1)
-    lines.pop if lines.last == ""
-    lines
-  end
-
   def parse_checksums(text)
     checksums = {}
-    split_lines(text).each do |line|
+    text.each_line(chomp: true) do |line|
       match = CHECKSUM_LINE.match(line)
       raise "Malformed or duplicate checksum entry" if match.nil? || checksums.key?(match[2])
 
