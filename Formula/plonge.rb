@@ -5,23 +5,23 @@ class Plonge < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/mattt/plonge/releases/download/v0.2.0/plonge_0.2.0_darwin_arm64.tar.gz"
-      sha256 "f80dd8c0495be504050638e44e63750619929633fec4e424a098cb260c1406aa"
+      url "https://github.com/mattt/plonge/releases/download/v0.2.1/plonge_0.2.1_darwin_arm64.tar.gz"
+      sha256 "768486e6c6fd3f9ff3ccac4b39302c499a88ca9b496b66e254a5749895b528a8"
     end
     on_intel do
-      url "https://github.com/mattt/plonge/releases/download/v0.2.0/plonge_0.2.0_darwin_amd64.tar.gz"
-      sha256 "a0f3451776c18a8b440c9c508a8bf128450376e13b8221240acf5ec9ff502de3"
+      url "https://github.com/mattt/plonge/releases/download/v0.2.1/plonge_0.2.1_darwin_amd64.tar.gz"
+      sha256 "36754cce8ad05a3a37e1d12ba9b55d97961c14f2c4e296456de731ee62c8e8bc"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://github.com/mattt/plonge/releases/download/v0.2.0/plonge_0.2.0_linux_arm64.tar.gz"
-      sha256 "b6459cc4656ebaaf4d8a4a19482b13ca259852a38c7c691e970531857d7ba867"
+      url "https://github.com/mattt/plonge/releases/download/v0.2.1/plonge_0.2.1_linux_arm64.tar.gz"
+      sha256 "5da63fd52c5d2b602887f6df1cf37fcea90e234e6b9026cb039b84b816e85650"
     end
     on_intel do
-      url "https://github.com/mattt/plonge/releases/download/v0.2.0/plonge_0.2.0_linux_amd64.tar.gz"
-      sha256 "e2f9b2038e98d6e7ded1af5d37946f2562ffae507c0ea88be593884c9e2b7edb"
+      url "https://github.com/mattt/plonge/releases/download/v0.2.1/plonge_0.2.1_linux_amd64.tar.gz"
+      sha256 "a170bb0e3cf3c1383935ac68feb8191f0ac933225b4aa3b8da38f44586afa3f1"
     end
   end
 
