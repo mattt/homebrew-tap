@@ -12,11 +12,14 @@ cask "imcp" do
     strategy :github_latest
   end
 
+  auto_updates true
+
   app "iMCP.app"
 
   zap trash: [
     "~/Library/Application Support/iMCP",
     "~/Library/Caches/iMCP",
+    "~/Library/Containers/co.dododo.iMCP",
     "~/Library/Preferences/co.dododo.iMCP.plist",
   ]
 end
