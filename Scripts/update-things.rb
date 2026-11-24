@@ -10,6 +10,7 @@ TEMPLATE = <<'EOS'
 class Things < Formula
   desc "CLI and MCP server for Things 3"
   homepage "https://github.com/mattt/things-cli"
+  %<darwin_arm64>s
   license "MIT"
 
   depends_on :macos
@@ -17,9 +18,6 @@ class Things < Formula
   on_macos do
     depends_on macos: :monterey
 
-    on_arm do
-      %<darwin_arm64>s
-    end
     on_intel do
       %<darwin_amd64>s
     end
@@ -37,7 +35,8 @@ EOS
 
 render = lambda do |version, archives, checksums|
   stanzas = archives.to_h do |target, name|
-    [target.to_sym, Release.asset_stanza(REPO, version, name, checksums[name], "      ")]
+    pad = target == "darwin_arm64" ? "  " : "      "
+    [target.to_sym, Release.asset_stanza(REPO, version, name, checksums[name], pad)]
   end
   format(TEMPLATE, **stanzas)
 end
