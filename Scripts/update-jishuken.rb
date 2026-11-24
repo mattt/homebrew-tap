@@ -21,8 +21,6 @@ class Jishuken < Formula
   depends_on arch: [:arm64, :x86_64]
 
   on_macos do
-    depends_on macos: :big_sur
-
     on_arm do
       %<aarch64_apple_darwin>s
     end

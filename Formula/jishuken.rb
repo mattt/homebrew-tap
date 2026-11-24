@@ -7,8 +7,6 @@ class Jishuken < Formula
   depends_on arch: [:arm64, :x86_64]
 
   on_macos do
-    depends_on macos: :big_sur
-
     on_arm do
       url "https://github.com/mattt/jishuken/releases/download/v0.1.0/jishuken-v0.1.0-aarch64-apple-darwin.tar.gz"
       sha256 "dc9b0205e516fff6267b68482a3c885f829a1df89fe919e353b265f274dac319"
