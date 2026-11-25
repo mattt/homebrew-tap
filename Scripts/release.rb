@@ -12,7 +12,10 @@ module Release
 
   def gh(repo, *args)
     out, status = Open3.capture2("gh", *args, "--repo", repo)
-    raise "gh #{args.first(2).join(" ")} failed (exit #{status.exitstatus})" unless status.success?
+    unless status.success?
+      command = args.first(2).join(" ")
+      raise "gh #{command} failed (exit #{status.exitstatus})"
+    end
 
     out
   end
@@ -68,7 +71,11 @@ module Release
     version = tag.delete_prefix(prefix)
     name = File.basename(path, ".rb")
     kind = path.start_with?("Casks/") ? "cask" : "formula"
-    current = (first_release_ok && !File.exist?(path)) ? "" : File.read(path)
+    current = if first_release_ok && !File.exist?(path)
+      ""
+    else
+      File.read(path)
+    end
     old = previous.match(current)
     raise "Refusing to downgrade the #{kind}" if old && (version_parts(old[1]) <=> version_parts(version)) == 1
 

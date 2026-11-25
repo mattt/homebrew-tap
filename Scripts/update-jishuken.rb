@@ -64,7 +64,11 @@ render = lambda do |version, archives, checksums|
     [target.tr("-", "_").to_sym, Release.asset_stanza(repo, version, name, checksums[name], "      ")]
   end
   # Upgrade users of the original 0.1.0 source formula to the binary package.
-  revision = (version == "0.1.0") ? "  revision 1\n" : ""
+  revision = if version == "0.1.0"
+    "  revision 1\n"
+  else
+    ""
+  end
   format(template, revision: revision, **stanzas)
 end
 

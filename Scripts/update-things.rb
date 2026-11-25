@@ -35,7 +35,11 @@ EOS
 
 render = lambda do |version, archives, checksums|
   stanzas = archives.to_h do |target, name|
-    pad = (target == "darwin_arm64") ? "  " : "      "
+    pad = if target == "darwin_arm64"
+      "  "
+    else
+      "      "
+    end
     [target.to_sym, Release.asset_stanza(repo, version, name, checksums[name], pad)]
   end
   format(template, **stanzas)
