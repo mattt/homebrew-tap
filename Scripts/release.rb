@@ -56,10 +56,12 @@ module Release
   # archives:         ->(version) { {target => archive name} }
   # manifest:         ->(version) { name of the file listing "HASH  NAME" lines }
   # render:           ->(version, archives, checksums) { file text }
+  # unused:           other names the manifest may list, which the file does not use
   # prefix:           what comes before the version in the release tag
   # first_release_ok: wait quietly when the repository has no release,
   #                   and treat a missing file as empty
-  def update(repo:, path:, previous:, archives:, manifest:, render:, prefix: "v", first_release_ok: true)
+  def update(repo:, path:, previous:, archives:, manifest:, render:, unused: [], prefix: "v",
+             first_release_ok: true)
     release = release_info(repo, first_release_ok)
     return unless release
 
@@ -91,7 +93,8 @@ module Release
     updated = Dir.mktmpdir do |tmp|
       download(repo, tag, manifest_name, tmp)
       checksums = parse_checksums(File.read(File.join(tmp, manifest_name)))
-      if checksums.keys.sort != archive_names.values.sort
+      listed = checksums.keys - unused
+      if listed.sort != archive_names.values.sort
         raise "#{manifest_name} must list exactly #{archive_names.values.join(", ")}"
       end
 
