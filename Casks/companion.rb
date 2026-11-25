@@ -1,8 +1,8 @@
 cask "companion" do
-  version :latest
-  sha256 :no_check
+  version "0.2.2"
+  sha256 "0db76449f4aeff6609d49302dd9c17dff17a748955c3a8064c85178877f144cc"
 
-  url "https://github.com/mattt/Companion/releases/latest/download/Companion.zip"
+  url "https://github.com/mattt/Companion/releases/download/#{version}/Companion.zip"
   name "Companion"
   desc "MCP client for testing and debugging MCP servers"
   homepage "https://github.com/mattt/Companion"
@@ -11,6 +11,8 @@ cask "companion" do
     url :url
     strategy :github_latest
   end
+
+  depends_on :macos
 
   app "Companion.app"
 

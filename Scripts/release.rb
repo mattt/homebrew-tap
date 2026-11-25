@@ -12,7 +12,10 @@ module Release
 
   def gh(repo, *args)
     out, status = Open3.capture2("gh", *args, "--repo", repo)
-    raise "gh #{args.first(2).join(" ")} failed (exit #{status.exitstatus})" unless status.success?
+    unless status.success?
+      command = args.first(2).join(" ")
+      raise "gh #{command} failed (exit #{status.exitstatus})"
+    end
 
     out
   end
@@ -68,7 +71,11 @@ module Release
     version = tag.delete_prefix(prefix)
     name = File.basename(path, ".rb")
     kind = path.start_with?("Casks/") ? "cask" : "formula"
-    current = first_release_ok && !File.exist?(path) ? "" : File.read(path)
+    current = if first_release_ok && !File.exist?(path)
+      ""
+    else
+      File.read(path)
+    end
     old = previous.match(current)
     raise "Refusing to downgrade the #{kind}" if old && (version_parts(old[1]) <=> version_parts(version)) == 1
 
@@ -81,7 +88,7 @@ module Release
       return
     end
 
-    Dir.mktmpdir do |tmp|
+    updated = Dir.mktmpdir do |tmp|
       download(repo, tag, manifest_name, tmp)
       checksums = parse_checksums(File.read(File.join(tmp, manifest_name)))
       if checksums.keys.sort != archive_names.values.sort
@@ -91,7 +98,7 @@ module Release
       text = render.call(version, archive_names, checksums)
       if text == current
         puts "#{tag}: #{kind} already current"
-        return
+        next false
       end
       archive_names.each_value do |archive|
         download(repo, tag, archive, tmp)
@@ -99,14 +106,17 @@ module Release
         raise "Checksum mismatch for #{archive}" if actual != checksums[archive]
       end
       File.write(path, text)
+      true
     end
+    return unless updated
+
     puts "Updated #{name} to #{tag}"
     write_output(version)
   end
 
   def write_output(version)
-    output = ENV["GITHUB_OUTPUT"]
-    return if output.nil? || output.empty?
+    output = ENV.fetch("GITHUB_OUTPUT", nil)
+    return if output.to_s.empty?
 
     File.open(output, "a") do |handle|
       handle.write("changed=true\n")
@@ -115,7 +125,7 @@ module Release
   end
 
   def asset_stanza(repo, version, name, sha256, pad)
-    %(url "https://github.com/#{repo}/releases/download/v#{version}/#{name}"\n) +
-      %(#{pad}sha256 "#{sha256}")
+    %Q(url "https://github.com/#{repo}/releases/download/v#{version}/#{name}"\n) +
+      %Q(#{pad}sha256 "#{sha256}")
   end
 end
