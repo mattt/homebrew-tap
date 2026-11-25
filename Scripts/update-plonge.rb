@@ -4,55 +4,55 @@
 # Update the binary formula only after a complete, verified stable release.
 require_relative "release"
 
-REPO = "mattt/plonge"
-TARGETS = %w[darwin_arm64 darwin_amd64 linux_arm64 linux_amd64].freeze
+repo = "mattt/plonge"
+targets = %w[darwin_arm64 darwin_amd64 linux_arm64 linux_amd64].freeze
 
-TEMPLATE = <<'EOS'
-class Plonge < Formula
-  desc "Find and delete the caches that developer tools leave on disk"
-  homepage "https://github.com/mattt/plonge"
-  license "MIT"
+template = <<~'EOS'
+  class Plonge < Formula
+    desc "Find and delete the caches that developer tools leave on disk"
+    homepage "https://github.com/mattt/plonge"
+    license "MIT"
 
-  on_macos do
-    on_arm do
-      %<darwin_arm64>s
+    on_macos do
+      on_arm do
+        %<darwin_arm64>s
+      end
+      on_intel do
+        %<darwin_amd64>s
+      end
     end
-    on_intel do
-      %<darwin_amd64>s
+
+    on_linux do
+      on_arm do
+        %<linux_arm64>s
+      end
+      on_intel do
+        %<linux_amd64>s
+      end
+    end
+
+    def install
+      bin.install "plonge"
+    end
+
+    test do
+      assert_match version.to_s, shell_output("#{bin}/plonge --version")
     end
   end
-
-  on_linux do
-    on_arm do
-      %<linux_arm64>s
-    end
-    on_intel do
-      %<linux_amd64>s
-    end
-  end
-
-  def install
-    bin.install "plonge"
-  end
-
-  test do
-    assert_match version.to_s, shell_output("#{bin}/plonge --version")
-  end
-end
 EOS
 
 render = lambda do |version, archives, checksums|
   stanzas = archives.to_h do |target, name|
-    [target.to_sym, Release.asset_stanza(REPO, version, name, checksums[name], "      ")]
+    [target.to_sym, Release.asset_stanza(repo, version, name, checksums[name], "      ")]
   end
-  format(TEMPLATE, **stanzas)
+  format(template, **stanzas)
 end
 
 Release.update(
-  repo: REPO,
-  path: "Formula/plonge.rb",
+  repo:     repo,
+  path:     "Formula/plonge.rb",
   previous: %r{/download/v(\d+\.\d+\.\d+)/},
-  archives: ->(version) { TARGETS.to_h { |t| [t, "plonge_#{version}_#{t}.tar.gz"] } },
+  archives: ->(version) { targets.to_h { |t| [t, "plonge_#{version}_#{t}.tar.gz"] } },
   manifest: ->(version) { "plonge_#{version}_checksums.txt" },
-  render: render
+  render:   render,
 )
