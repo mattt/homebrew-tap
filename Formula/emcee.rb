@@ -5,23 +5,23 @@ class Emcee < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/mattt/emcee/releases/download/v0.9.0/emcee_Darwin_arm64.tar.gz"
-      sha256 "b68b35f0c6b02bf4d0fe739e0144ecf14e7e6f4d7e3456cad9bf0c0073ebd5c5"
+      url "https://github.com/mattt/emcee/releases/download/v0.9.1/emcee_Darwin_arm64.tar.gz"
+      sha256 "3ad3164b8db89fc958cf87a81ac983ad0b470a9695656bb08f30ca3710362bb6"
     end
     on_intel do
-      url "https://github.com/mattt/emcee/releases/download/v0.9.0/emcee_Darwin_x86_64.tar.gz"
-      sha256 "ad3b2dbf7ad63a1d8f17eaae69b7c08a5f3f172c3016d83fbe3ed7fa42556aca"
+      url "https://github.com/mattt/emcee/releases/download/v0.9.1/emcee_Darwin_x86_64.tar.gz"
+      sha256 "c1ef7172096136bd81e235eb49100e2a3a74d0966b9ded30e119c27457647834"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://github.com/mattt/emcee/releases/download/v0.9.0/emcee_Linux_arm64.tar.gz"
-      sha256 "94f9a8ff810600f6f3dd9c626a438ab9a2e975b6a36987feda73d1bb1d22a98b"
+      url "https://github.com/mattt/emcee/releases/download/v0.9.1/emcee_Linux_arm64.tar.gz"
+      sha256 "dd9dff396fbf19c20d13aae1ac8fb9ac074803e2502ee656a082160eee0fcd29"
     end
     on_intel do
-      url "https://github.com/mattt/emcee/releases/download/v0.9.0/emcee_Linux_x86_64.tar.gz"
-      sha256 "f41a57fdf1b7637a6242b95cdb804b0eb9d0548eb515db25e44a375eb6c1488f"
+      url "https://github.com/mattt/emcee/releases/download/v0.9.1/emcee_Linux_x86_64.tar.gz"
+      sha256 "053db42913356c00cd62c636c67dd3cd0dbb2d9e3a0eca2b102c4f25c93fbcdd"
     end
   end
 
