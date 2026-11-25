@@ -1,8 +1,8 @@
 class Things < Formula
   desc "CLI and MCP server for Things 3"
   homepage "https://github.com/mattt/things-cli"
-  url "https://github.com/mattt/things-cli/releases/download/v0.3.0/things_0.3.0_darwin_arm64.tar.gz"
-  sha256 "04e1340476aab0de7ebbddd56c6b303ec4114c098df415b2d59b7914229165db"
+  url "https://github.com/mattt/things-cli/releases/download/v0.3.1/things_0.3.1_darwin_arm64.tar.gz"
+  sha256 "f03452e1bcc9dc635208b01e4e9c87c348e5d2a39693c06cbe1c36d955a16920"
   license "MIT"
 
   depends_on :macos
@@ -11,8 +11,8 @@ class Things < Formula
     depends_on macos: :monterey
 
     on_intel do
-      url "https://github.com/mattt/things-cli/releases/download/v0.3.0/things_0.3.0_darwin_amd64.tar.gz"
-      sha256 "edd70d655c35afc9759adeb3518a617aad99fe6a2af2e69265a9506d90630b5a"
+      url "https://github.com/mattt/things-cli/releases/download/v0.3.1/things_0.3.1_darwin_amd64.tar.gz"
+      sha256 "d3d9f84ad5ab9f7ca3aeb914fe13a6e40d73d95ff4615f6a6bf30cad9ff5cbad"
     end
   end
 
